@@ -3,17 +3,18 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function ProductCard({product}) {
+   if (!product) return null; 
   return (
     <Link to={`/product/${product.id}`} >
        <div>
         <img src={product.image} alt={product.title}
-         className='object-contain max-h-full'
+         className='object-contain h-[400px]'
          />
        </div>
 
        {/* Title */}
 
-       <div className='h-3 font-semibold text-sm'>
+       <div className='font-semibold text-sm line-clamp-2 w-[400px]'>
         {product.title}
        </div>
        
@@ -21,7 +22,7 @@ function ProductCard({product}) {
         {product.rating && (
             <div className='flex items-center gap-1 text-yellow-500 text-sm mt-1'>
                 <Star size={14} fill='currentColor'/>
-                {product.rating}
+                {product.rating?.rate}
             </div>
           )
         }
@@ -41,14 +42,13 @@ function ProductCard({product}) {
         </div>
 
         {/* button */}
-
-        <button
-          className='mt-auto bg-black text-white rounded-lg py-2 text-sm hover:bg-gray-800 transiton'
+          <button
+          className='items-center mt-auto mx-auto bg-black text-white rounded-lg py-2 px-2 text-sm hover:bg-gray-800 transiton'
         >
             Add to Cart
         </button>
+        
             
-
     </Link>
   )
 }

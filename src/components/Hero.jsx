@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Carousel from './Carousel'
 import { Link } from 'react-router-dom';
-
+import ProductCard from './ProductCard';
+import ProductSection from './ProductSection'
 const categories = [
   { name: "electronics", img: "/categories/electronic.png" },
   { name: "Mobiles", img: "/categories/mobile.png" },
@@ -15,18 +16,24 @@ const categories = [
 
 function Hero() {
   const [products,setProducts]=useState([])
+ // const [carouselProducts,setCarouselProducts]=useState([])
 
   useEffect(()=>{
     fetch("https://fakestoreapi.com/products")
     .then((res)=>res.json())
-    .then((data)=>setProducts(data.slice(0,5)))
+    .then((data)=>setProducts(data))
+   // .then((data)=>setCarouselProducts(data.slice(0,5)))
     .catch((err)=>console.log(err)
     )
   },[])
+  const carouselProducts = products.slice(0,5)
+  const electronicsProducts = products.filter(
+        p => p.category?.toLowerCase() === "electronics"
+   );
   return (
-      <div className="w-full">
+    <div className="w-full">
       <Carousel autoSlide autoSlideInterval={3000}>
-        {products.map(product => (
+        {carouselProducts.map(product => (
           <div
             key={product.id}
             className="h-[400px] flex items-center justify-center bg-red-600"
@@ -57,6 +64,25 @@ function Hero() {
              </Link>
          ))}
       </div>
+      <h2 className='text-3xl font-bold m-1 p-2'>Top Deals</h2>
+       <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
+                {products.map(product=>(
+                 <ProductCard
+                  key={product.id}
+                  product={product}
+                 />
+                ))}
+        </div>
+       
+        {/* best value on electronics */}
+       {console.log(products.map(p => p.category))}
+       {console.log(electronicsProducts.map(p=> p.id))}
+       <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
+          <ProductSection 
+          title="Best Value Electronics"
+           products={electronicsProducts}
+          />
+        </div> 
 
     </div>
   )
