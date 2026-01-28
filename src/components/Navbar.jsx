@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { ThemeContext } from '../context/ThemeProvider';
+
 function Navbar() {
-    let isDark = true
+    const { theme, toggleTheme } = useContext(ThemeContext)
+    const isDark = theme === "dark"
     let isLogin = false
     return (
         <div className="">
-            <div className={`w-full h-16 flex items-center px-8 ${isDark ? "bg-black" : "bg-white"}`}>
+            <div className={`w-full h-16 flex items-center px-8  ${isDark ? 'bg-black' : 'bg-white'}`}>
 
                 {/* LEFT: Logo + Search */}
                 <div className="flex items-center gap-6 flex-1">
-                    <h1 className="text-3xl font-bold text-white">
+                    <h1 className={`text-3xl font-bold ${isDark ? 'text-white' :'text-black'}`}>
                         ShopNest
                     </h1>
 
@@ -66,9 +69,17 @@ function Navbar() {
 
                     {/* Theme Toggle */}
                     {isDark ? (
-                        <FaSun size={24} className="text-white cursor-pointer" />
+                        <FaSun
+                            size={24}
+                            onClick={toggleTheme}
+                            className="text-white cursor-pointer"
+                        />
                     ) : (
-                        <FaMoon size={24} className="text-black cursor-pointer" />
+                        <FaMoon
+                            size={24}
+                            onClick={toggleTheme}
+                            className="text-black cursor-pointer"
+                        />
                     )}
                 </div>
             </div>
