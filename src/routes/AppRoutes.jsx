@@ -4,6 +4,8 @@ import Home from '../pages/Home'
 import CategoryPage from '../pages/CategoryPage'
 import ProductDetail from '../pages/ProductDetail'
 import Layout from '../layout/Layout'
+import Cart from '../pages/Cart'
+import Login from '../pages/Login'
 
 function AppRoutes() {
   return (
@@ -12,6 +14,8 @@ function AppRoutes() {
             <Route path='/' element ={<Home/>}/>
             <Route path='/category/:name' element={<CategoryPage/>}/>
             <Route path='/product/:id' element={<ProductDetail/>} />
+            <Route path='/cart' element={<Cart/>}/>
+            <Route path='/login' element={<Login/>}/>
         </Route>
     </Routes>
   )

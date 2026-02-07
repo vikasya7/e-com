@@ -1,21 +1,24 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { ThemeContext } from '../context/ThemeProvider';
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Navbar() {
     const { theme, toggleTheme } = useContext(ThemeContext)
     const isDark = theme === "dark"
     let isLogin = false
+    const [user,setUser]=useState()
     return (
         <div className="">
             <div className={`w-full h-16 flex items-center px-8  ${isDark ? 'bg-black' : 'bg-white'}`}>
 
                 {/* LEFT: Logo + Search */}
                 <div className="flex items-center gap-6 flex-1">
-                    <h1 className={`text-3xl font-bold ${isDark ? 'text-white' :'text-black'}`}>
+                    <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-black'}`}>
                         ShopNest
                     </h1>
 
@@ -57,7 +60,7 @@ function Navbar() {
                     </button>
 
                     {/* Cart */}
-                    <div className="flex items-center gap-2 cursor-pointer">
+                    <Link to="/cart" className="flex items-center gap-2 cursor-pointer">
                         <FaShoppingCart
                             size={26}
                             className={isDark ? "text-white" : "text-black"}
@@ -65,7 +68,7 @@ function Navbar() {
                         <span className={`${isDark ? "text-white" : "text-black"} text-xl`}>
                             Cart
                         </span>
-                    </div>
+                    </Link>
 
                     {/* Theme Toggle */}
                     {isDark ? (
