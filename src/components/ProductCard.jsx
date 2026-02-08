@@ -1,6 +1,7 @@
 import { Star } from 'feather-icons-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { addToCart } from '../api/cart.js';
 
 function ProductCard({product}) {
    if (!product) return null; 
@@ -43,7 +44,17 @@ function ProductCard({product}) {
 
         {/* button */}
           <button
-          className='items-center mt-auto mx-auto bg-black text-white rounded-lg py-2 px-2 text-sm hover:bg-gray-800 transiton'
+           onClick={async()=>{
+            try {
+              console.log(product);
+              await  addToCart(product._id)
+              alert("Added to cart ✅")
+            } catch (error) {
+                  console.log(error);
+                  alert("Failed ❌");
+            }
+           }}
+          className='items-center mt-auto mx-auto bg-black text-white rounded-lg py-2 px-2 text-sm hover:bg-gray-800 transition'
         >
             Add to Cart
         </button>
