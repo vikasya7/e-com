@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 function Login() {
+    const navigate=useNavigate()
     const[email,setEmail]=useState("")
     const[password,setPassword]=useState("")
 
-    const handleLogin=async ()=>{
-        await axios.post(
-            "/api/v1/users/login",
-            {email,password},
-            {withCredentials: true}
-        )
-        alert("Logged in ✅");
+     const handleLogin=async()=>{
+       try {
+         await axios.post("/api/v1/users/login",{email,password},{withCredentials:true})
+         navigate("/")
+       } catch (err) {
+         console.log(err);
+         alert("Login failed");
+       }
     }
   return (
    <div className="p-8">
