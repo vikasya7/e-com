@@ -1,46 +1,61 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+export default function Admin() {
 
-export default function Admin(){
-    const [products,setProducts]=useState([])
-    const [form, setForm] = useState({
+  const [products, setProducts] = useState([]);
+
+  const [form, setForm] = useState({
     title: "",
+    description: "",
     price: "",
     image: "",
     stock: ""
-    });
-    const API = axios.create({
-        baseURL: "/api/v1",
-        withCredentials: true
-    });
+  });
 
-    // fetch products
+  const API = axios.create({
+    baseURL: "/api/v1",
+    withCredentials: true
+  });
 
-    const fetchProducts =async ()=>{
-        const res=await API.get("/products")
-        setProducts(res.data)
-    }
+  // ---------------- HANDLE FORM ----------------
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    useEffect(()=>{
-        fetchProducts()
-    },[])
+  // ---------------- FETCH PRODUCTS ----------------
+  const fetchProducts = async () => {
+    const res = await API.get("/products");
+    setProducts(res.data);
+  };
 
-    // add products
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    const addProduct=async ()=>{
-        await API.post("/products",form)
-        setForm({ title: "", price: "", image: "", stock: "" })
-        fetchProducts()
-    }
+  // ---------------- ADD PRODUCT ----------------
+  const addProduct = async () => {
+     const data=new FormData()
+     data.append("name",form.name)
+     data.append("description", form.description);
+     data.append("price",form.price)
+     data.append("stock",form.stock)
+     data.append("image",form.image)
 
-    // delete products
-    const deleteProduct = async (id) => {
-       await API.delete(`/products/${id}`);
-        fetchProducts();
-     };
+     await API.post("/products",data,{
+      headers:{"Content-Type":"multipart/form-data"}
+     })
+     setForm({title: "", price: "", image: "", stock: "" })
+     fetchProducts()
+  };
 
-     return (
+  // ---------------- DELETE PRODUCT ----------------
+  const deleteProduct = async (id) => {
+    await API.delete(`/products/${id}`);
+    fetchProducts();
+  };
+
+  return (
     <div className="p-8 space-y-8">
 
       {/* ---------- ADD FORM ---------- */}
@@ -48,25 +63,48 @@ export default function Admin(){
         <h2 className="text-xl font-bold mb-4">Add Product</h2>
 
         <div className="space-y-3">
-          <input name="title" placeholder="Title"
-            value={form.title}
-            onChange={handleChange}
-            className="border p-2 w-full rounded" />
 
-          <input name="price" placeholder="Price"
+          <input
+            name="title"
+            placeholder="Title"
+            value={form.name}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+          />
+
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={form.description}
+            onChange={handleChange}
+          />
+
+          <input
+            name="price"
+            type="number"
+            placeholder="Price"
             value={form.price}
             onChange={handleChange}
-            className="border p-2 w-full rounded" />
+            className="border p-2 w-full rounded"
+          />
 
-          <input name="image" placeholder="Image URL"
-            value={form.image}
-            onChange={handleChange}
-            className="border p-2 w-full rounded" />
+          <input
+            type="file"
+            name="image"
+            onChange={(e) =>
+                 setForm({ ...form, image: e.target.files[0] })
+            }
+            className="border p-2 w-full rounded"
+             />
 
-          <input name="stock" placeholder="Stock"
+          <input
+            name="stock"
+            type="number"
+            placeholder="Stock"
             value={form.stock}
             onChange={handleChange}
-            className="border p-2 w-full rounded" />
+            className="border p-2 w-full rounded"
+          />
 
           <button
             onClick={addProduct}
@@ -74,9 +112,9 @@ export default function Admin(){
           >
             Add Product
           </button>
+
         </div>
       </div>
-
 
       {/* ---------- PRODUCT TABLE ---------- */}
       <div className="bg-white shadow p-6 rounded-lg">
@@ -98,7 +136,6 @@ export default function Admin(){
                 <td>{p.title}</td>
                 <td>₹{p.price}</td>
                 <td>{p.stock}</td>
-
                 <td>
                   <button
                     onClick={() => deleteProduct(p._id)}

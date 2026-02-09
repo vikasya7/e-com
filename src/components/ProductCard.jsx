@@ -6,9 +6,9 @@ import { addToCart } from '../api/cart.js';
 function ProductCard({product}) {
    if (!product) return null; 
   return (
-    <Link to={`/product/${product.id}`} >
+    <Link to={`/product/${product._id}`} >
        <div>
-        <img src={product.image} alt={product.title}
+        <img src={product.image} alt={product.name}
          className='object-contain h-[400px]'
          />
        </div>
@@ -16,7 +16,7 @@ function ProductCard({product}) {
        {/* Title */}
 
        <div className='font-semibold text-sm line-clamp-2 w-[400px]'>
-        {product.title}
+        {product.name}
        </div>
        
         {/* Rating */}

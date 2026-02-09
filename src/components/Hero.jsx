@@ -3,6 +3,7 @@ import Carousel from './Carousel'
 import { Link } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import ProductSection from './ProductSection'
+import axios from 'axios';
 const categories = [
   { name: "electronics", img: "/categories/electronic.png" },
   { name: "Mobiles", img: "/categories/mobile.png" },
@@ -13,17 +14,18 @@ const categories = [
   { name: "Furniture", img: "/categories/furniture.png" },
   { name: "Grocery", img: "/categories/grocery.png" }
 ];
-
+ const API=axios.create({
+   baseURL:"/api/v1",
+   withCredentials:true
+ })
 function Hero() {
   const [products,setProducts]=useState([])
- // const [carouselProducts,setCarouselProducts]=useState([])
+
 
   useEffect(()=>{
-    fetch("https://fakestoreapi.com/products")
-    .then((res)=>res.json())
-    .then((data)=>setProducts(data))
-   // .then((data)=>setCarouselProducts(data.slice(0,5)))
-    .catch((err)=>console.log(err)
+    API.get("/products")
+    .then(res=>setProducts(res.data))
+    .catch(err=>console.log(err)
     )
   },[])
   const carouselProducts = products.slice(0,5)
@@ -35,12 +37,12 @@ function Hero() {
       <Carousel autoSlide autoSlideInterval={3000}>
         {carouselProducts.map(product => (
           <div
-            key={product.id}
+            key={product._id}
             className="h-[400px] flex items-center justify-center bg-red-600"
           >
             <img
               src={product.image}
-              alt={product.title}
+              alt={product.name}
               className="max-h-[320px] object-contain drop-shadow-2xl"
             />
           </div>
@@ -68,7 +70,7 @@ function Hero() {
        <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
                 {products.map(product=>(
                  <ProductCard
-                  key={product.id}
+                  key={product._id}
                   product={product}
                  />
                 ))}
