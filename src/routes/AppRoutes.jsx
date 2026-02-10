@@ -7,6 +7,8 @@ import Layout from '../layout/Layout'
 import Cart from '../pages/Cart'
 import Login from '../pages/Login'
 import Admin from '../pages/Admin'
+import AdminLayout from '../layout/AdminLayout'
+
 
 function AppRoutes() {
   return (
@@ -17,8 +19,13 @@ function AppRoutes() {
             <Route path='/product/:id' element={<ProductDetail/>} />
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/login' element={<Login/>}/>
-            <Route path="/admin" element={<Admin />} />
+            {/* <Route path='/admin' element={<Admin/>}/> */}
         </Route>
+
+         <Route path="/admin" element={<AdminLayout />}>
+             <Route path="products" element={<Admin />} />
+             <Route path="categories" element={<CategoryPage />} />
+         </Route>
     </Routes>
   )
 }
