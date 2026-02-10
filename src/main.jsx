@@ -3,9 +3,16 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
+import AppThemeProvider from './context/ThemeProvider.jsx'
+
+
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+
+  <AppThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+  </AppThemeProvider>
+
 )

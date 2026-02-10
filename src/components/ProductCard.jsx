@@ -1,13 +1,14 @@
 import { Star } from 'feather-icons-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { addToCart } from '../api/cart.js';
 
 function ProductCard({product}) {
    if (!product) return null; 
   return (
-    <Link to={`/product/${product.id}`} >
+    <Link to={`/product/${product._id}`} >
        <div>
-        <img src={product.image} alt={product.title}
+        <img src={product.image} alt={product.name}
          className='object-contain h-[400px]'
          />
        </div>
@@ -15,7 +16,7 @@ function ProductCard({product}) {
        {/* Title */}
 
        <div className='font-semibold text-sm line-clamp-2 w-[400px]'>
-        {product.title}
+        {product.name}
        </div>
        
         {/* Rating */}
@@ -43,7 +44,17 @@ function ProductCard({product}) {
 
         {/* button */}
           <button
-          className='items-center mt-auto mx-auto bg-black text-white rounded-lg py-2 px-2 text-sm hover:bg-gray-800 transiton'
+           onClick={async()=>{
+            try {
+              console.log(product);
+              await  addToCart(product._id)
+              alert("Added to cart ✅")
+            } catch (error) {
+                  console.log(error);
+                  alert("Failed ❌");
+            }
+           }}
+          className='items-center mt-auto mx-auto bg-black text-white rounded-lg py-2 px-2 text-sm hover:bg-gray-800 transition'
         >
             Add to Cart
         </button>
