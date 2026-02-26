@@ -1,159 +1,234 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { CiSearch } from "react-icons/ci";
-import { FaUser } from "react-icons/fa";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaSun, FaMoon } from "react-icons/fa";
-import { ThemeContext } from '../context/ThemeProvider';
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { Link, NavLink } from "react-router-dom";
+import useCart from "../context/useCart";
+import useAuth from "../context/useAuth";
+import api from "../utils/api";
 
 function Navbar() {
-    const { theme, toggleTheme } = useContext(ThemeContext)
-    const isDark = theme === "dark"
-    let isLogin = false
+  const { totalCount } = useCart();
+  const { user, setUser } = useAuth();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef();
 
-    const [user, setUser] = useState(null)
+  // Close dropdown when clicked outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
-    // check login automatically on load
-
-
-    useEffect(() => {
-        axios
-            .get("/api/v1/users/me", { withCredentials: true })
-            .then((res) => setUser(res.data.data))
-            .catch(() => setUser(null))
-    }, [])
-
-    //logout 
-
-    const handleLogout = async () => {
-        await axios.post("/api/v1/users/logout", {}, { withCredentials: true })
-        setUser(null)
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/v1/users/logout");
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
     }
+  };
 
+  return (
+    <header className="sticky top-0 z-50 bg-[#FFF8EE] shadow-md">
+      <div className="max-w-7xl mx-auto px-10">
+        <div className="flex items-center justify-between h-20">
 
+          {/* LOGO */}
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo.png"
+              alt="Squirll Bites"
+              className="h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+            />
+          </Link>
 
+          {/* DESKTOP NAV */}
+          <div className="hidden md:flex items-center gap-10 font-medium text-[#6B3E26]">
+            <NavLink
+              to="/"
+              className="relative hover:text-[#C48A3A] transition"
+            >
+              Home
+            </NavLink>
 
-    return (
-        <div className="">
-            <div className={`w-full h-16 flex items-center px-8  ${isDark ? 'bg-black' : 'bg-white'}`}>
+            <NavLink
+              to="/shop"
+              className="relative hover:text-[#C48A3A] transition"
+            >
+              Shop
+            </NavLink>
 
-                {/* LEFT: Logo + Search */}
-                <div className="flex items-center gap-6 flex-1">
-                    <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-black'}`}>
-                        ShopNest
-                    </h1>
+            <NavLink
+              to="/about"
+              className="relative hover:text-[#C48A3A] transition"
+            >
+              About Us
+            </NavLink>
 
-                    <div className="relative w-[420px] border border-amber-500 rounded-xl">
-                        <CiSearch
-                            size={22}
-                            className={`absolute left-4 top-1/2 -translate-y-1/2 ${isDark ? "text-white" : "text-black"
-                                }`}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Search for Products, Brands and more"
-                            className="
-                                    w-full
-                                    py-3
-                                    pl-12 pr-4
-                                    bg-transparent
-                                    text-white
-                                    placeholder:text-white/70
-                                    focus:outline-none
-                                    "
-                        />
+            <NavLink
+              to="/contact"
+              className="relative hover:text-[#C48A3A] transition"
+            >
+              Contact
+            </NavLink>
+
+            {user?.role === "admin" && (
+              <NavLink
+                to="/admin"
+                className="hover:text-[#C48A3A] transition"
+              >
+                Admin
+              </NavLink>
+            )}
+          </div>
+
+          {/* RIGHT SECTION */}
+          <div className="flex items-center gap-6">
+
+            {/* CART */}
+            <Link to="/cart" className="relative">
+              <FaShoppingCart
+                size={20}
+                className="text-[#6B3E26] hover:scale-110 transition"
+              />
+              {totalCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#C48A3A] text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md">
+                  {totalCount}
+                </span>
+              )}
+            </Link>
+
+            {/* AUTH SECTION */}
+            {!user ? (
+              <div className="hidden md:flex gap-4">
+                <Link
+                  to="/login"
+                  className="px-5 py-2 border border-[#6B3E26] text-[#6B3E26] rounded-full hover:bg-[#6B3E26] hover:text-white transition"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  to="/signup"
+                  className="px-5 py-2 bg-[#6B3E26] text-white rounded-full hover:bg-[#5A321D] transition"
+                >
+                  Signup
+                </Link>
+              </div>
+            ) : (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="flex items-center gap-3"
+                >
+                  <img
+                    src={user.avatar || "/default-avatar.png"}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-[#C48A3A]"
+                  />
+                  <span className="hidden md:block font-semibold text-[#6B3E26]">
+                    {user.fullname}
+                  </span>
+                </button>
+
+                {profileOpen && (
+                  <div className="absolute right-0 mt-4 w-56 bg-white rounded-xl shadow-2xl overflow-hidden border animate-fadeIn">
+
+                    <div className="px-4 py-3 border-b bg-[#FFF8EE]">
+                      <p className="font-semibold text-[#6B3E26]">
+                        {user.fullname}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {user.email}
+                      </p>
                     </div>
-                </div>
 
-                {/* RIGHT: Auth + Cart + Theme */}
-                <div className="ml-auto flex items-center gap-8">
-
-                    {/* Signup */}
-                    {!user ? (
-                        <>
-                            {/* login */}
-                            <Link
-                                to="/login"
-                                className={`px-8 py-3 border rounded-2xl text-lg font-semibold ${isDark ? "text-white border-white" : "text-black border-black"}`}
-                            >
-                                Login
-                            </Link>
-
-
-                            {/* signup */}
-                            <Link
-                                to="/signup"
-                                className='px-8 py-3 bg-black text-white rounded-2xl text-lg font-semibold'
-                            >
-                                Signup
-                            </Link>
-
-                        </>
-
-                    ) : (
-
-                        // when the user is logged in
-                        <>
-                            <div className="flex items-center gap-3">
-
-                                {/* Avatar */}
-                                <img
-                                    src={user.avatar}
-                                    alt="avatar"
-                                    className="w-10 h-10 rounded-full object-cover border"
-                                />
-
-                                {/* Name */}
-                                <span
-                                    className={`font-semibold text-lg ${isDark ? "text-white" : "text-black"
-                                        }`}
-                                >
-                                    Hi {user.fullname}
-                                </span>
-
-                                {/* Logout */}
-                                <button
-                                    onClick={handleLogout}
-                                    className="px-6 py-2 bg-red-500 text-white rounded-2xl"
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        </>
-
-                  )}
-                    {/* Cart */}
-                    <Link to="/cart" className="flex items-center gap-2 cursor-pointer">
-                        <FaShoppingCart
-                            size={26}
-                            className={isDark ? "text-white" : "text-black"}
-                        />
-                        <span className={`${isDark ? "text-white" : "text-black"} text-xl`}>
-                            Cart
-                        </span>
+                    <Link
+                      to="/orders"
+                      className="block px-4 py-3 text-sm hover:bg-[#FFF1DD] transition"
+                    >
+                      My Orders
                     </Link>
 
-                    {/* Theme Toggle */}
-                    {isDark ? (
-                        <FaSun
-                            size={24}
-                            onClick={toggleTheme}
-                            className="text-white cursor-pointer"
-                        />
-                    ) : (
-                        <FaMoon
-                            size={24}
-                            onClick={toggleTheme}
-                            className="text-black cursor-pointer"
-                        />
+                    {user?.role === "admin" && (
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-3 text-sm hover:bg-[#FFF1DD] transition"
+                      >
+                        Admin Dashboard
+                      </Link>
                     )}
-                </div>
-            </div>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* MOBILE MENU BUTTON */}
+            <button
+              className="md:hidden text-[#6B3E26]"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+            </button>
+          </div>
         </div>
 
-    )
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div className="md:hidden py-5 space-y-4 text-[#6B3E26] border-t">
+            <NavLink to="/" className="block">
+              Home
+            </NavLink>
+            <NavLink to="/shop" className="block">
+              Shop
+            </NavLink>
+            <NavLink to="/about" className="block">
+              About Us
+            </NavLink>
+            <NavLink to="/contact" className="block">
+              Contact
+            </NavLink>
+
+            {!user ? (
+              <>
+                <NavLink to="/login" className="block">
+                  Login
+                </NavLink>
+                <NavLink to="/signup" className="block">
+                  Signup
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/orders" className="block">
+                  My Orders
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="block text-red-500"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </header>
+  );
 }
 
-export default Navbar
+export default Navbar;
+

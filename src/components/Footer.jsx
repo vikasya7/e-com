@@ -1,68 +1,106 @@
-import { Link } from "react-router-dom"
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"
+import { Link } from "react-router-dom";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="bg-black text-gray-300 mt-16">
+    <footer className="bg-[#6B3E26] text-[#FFF8EE] mt-20">
 
-      {/* top section */}
-      <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+      {/* TOP SECTION */}
+      <div className="max-w-7xl mx-auto px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
 
-        {/* Brand */}
+        {/* BRAND */}
         <div>
-          <h1 className="text-2xl font-bold text-white mb-4">
-            ShopNest
-          </h1>
-          <p className="text-sm text-gray-400">
-            Your one-stop destination for electronics, fashion, home essentials
-            and more. Shop smart. Shop easy.
+          <img
+            src="/logo.png"
+            alt="Squirll Bites"
+            className="h-12 mb-4 brightness-110"
+          />
+          <p className="text-sm leading-relaxed text-[#F5E6D8]">
+            Premium roasted makhana snacks made with love and
+            the finest ingredients. Healthy. Crunchy. Delicious.
           </p>
         </div>
 
-        {/* Quick Links */}
+        {/* QUICK LINKS */}
         <div>
-          <h2 className="text-white font-semibold mb-4">Quick Links</h2>
-          <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-white">Home</Link></li>
-            <li><Link to="/cart" className="hover:text-white">Cart</Link></li>
-            <li><Link to="/category/electronics" className="hover:text-white">Electronics</Link></li>
-            <li><Link to="/category/fashion" className="hover:text-white">Fashion</Link></li>
+          <h2 className="text-lg font-semibold mb-4 text-[#FFF8EE]">
+            Quick Links
+          </h2>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <Link to="/" className="hover:text-[#C48A3A] transition">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop" className="hover:text-[#C48A3A] transition">
+                Shop
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-[#C48A3A] transition">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-[#C48A3A] transition">
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
 
-        {/* Categories */}
+        {/* CATEGORIES */}
         <div>
-          <h2 className="text-white font-semibold mb-4">Categories</h2>
-          <ul className="space-y-2 text-sm">
-            <li>Mobiles</li>
-            <li>Appliances</li>
-            <li>Beauty</li>
-            <li>Furniture</li>
+          <h2 className="text-lg font-semibold mb-4">
+            Categories
+          </h2>
+          <ul className="space-y-3 text-sm">
+            <li className="hover:text-[#C48A3A] transition cursor-pointer">
+              Classic Makhana
+            </li>
+            <li className="hover:text-[#C48A3A] transition cursor-pointer">
+              Peri Peri
+            </li>
+            <li className="hover:text-[#C48A3A] transition cursor-pointer">
+              Himalayan Salt
+            </li>
+            <li className="hover:text-[#C48A3A] transition cursor-pointer">
+              Combo Packs
+            </li>
           </ul>
         </div>
 
-        {/* Contact */}
+        {/* CONTACT */}
         <div>
-          <h2 className="text-white font-semibold mb-4">Contact Us</h2>
-          <p className="text-sm">📧 support@shopnest.com</p>
-          <p className="text-sm">📞 +91 9876543210</p>
+          <h2 className="text-lg font-semibold mb-4">
+            Contact Us
+          </h2>
 
-          {/* Socials */}
-          <div className="flex gap-4 mt-4 text-lg">
-            <FaFacebook className="cursor-pointer hover:text-white" />
-            <FaInstagram className="cursor-pointer hover:text-white" />
-            <FaTwitter className="cursor-pointer hover:text-white" />
+          <p className="text-sm mb-2">
+            📧 support@squirllbites.com
+          </p>
+
+          <p className="text-sm mb-4">
+            📞 +91 98765 43210
+          </p>
+
+          {/* SOCIALS */}
+          <div className="flex gap-4 text-lg">
+            <FaFacebookF className="cursor-pointer hover:text-[#C48A3A] transition" />
+            <FaInstagram className="cursor-pointer hover:text-[#C48A3A] transition" />
+            <FaTwitter className="cursor-pointer hover:text-[#C48A3A] transition" />
           </div>
         </div>
       </div>
 
-      {/* bottom bar */}
-      <div className="border-t border-gray-800 text-center py-4 text-sm text-gray-500">
-        © {new Date().getFullYear()} ShopNest. All rights reserved.
+      {/* BOTTOM BAR */}
+      <div className="border-t border-[#8B5A2B] text-center py-5 text-sm text-[#F5E6D8]">
+        © {new Date().getFullYear()} Squirll Bites. All rights reserved.
       </div>
-
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;
+

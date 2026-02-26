@@ -1,13 +1,13 @@
-import axios from "axios";
 
-export const startPayment = async (amount) => {
+import api from "./api";
+
+export const startPayment = async (addressId) => {
   try {
     // 1️⃣ create order from backend
-    const { data } = await axios.post(
-      "/api/payment/create-order",
-      { amount },
-      { withCredentials: true }
-    );
+   const { data } = await api.post(
+  "/api/v1/orders/place-order",
+  { addressId }
+);
 
     // 2️⃣ Razorpay options (comes from docs)
     const options = {
@@ -21,10 +21,9 @@ export const startPayment = async (amount) => {
 
       handler: async function (response) {
         // 3️⃣ verify payment
-        await axios.post(
+        await api.post(
           "/api/payment/verify",
-          response,
-          { withCredentials: true }
+          response
         );
 
         alert("✅ Payment Successful");

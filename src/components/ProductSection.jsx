@@ -1,25 +1,30 @@
-import React from 'react'
-import ProductCard from './ProductCard'
+import React from "react";
+import ProductCard from "./ProductCard";
 
-function ProductSection({title,products=[]}) {
+function ProductSection({ title, products }) {
+  const safeProducts = Array.isArray(products) ? products : [];
+
   return (
-    <div>
-        <div>
-            <h2 className='text-2xl font-bold'>{title}</h2>
-        </div>
-        
-        {/* cards */}
-        <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
-            {products.map(product =>(
-                <ProductCard 
-                 key={product.id}
-                 product={product}
-                 />
-            ))}
+    <section id="products" className="py-24 bg-[#FFF8EE]">
+      <div className="max-w-7xl mx-auto px-10">
+
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-[#6B3E26] mb-16">
+          {title}
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+          {safeProducts.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+            />
+          ))}
         </div>
 
-    </div>
-  )
+      </div>
+    </section>
+  );
 }
 
-export default ProductSection
+export default ProductSection;
+

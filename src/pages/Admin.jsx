@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useRef } from "react";
+import api from "../utils/api";
 
-const API = axios.create({
-  baseURL: "/api/v1",
-  withCredentials: true
-});
+
 
 export default function Admin() {
-  const fileRef=useRef(null)
+  const fileRef = useRef(null);
+
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
@@ -15,39 +13,60 @@ export default function Admin() {
   const [form, setForm] = useState({
     name: "",
     description: "",
-    price: "",
-    stock: "",
-    image: "",
-    category: ""
+    category: "",
+    images: [],
+    variants: [{ weight: "", price: "", stock: "" }],
   });
-
-  // ---------------- HANDLE FORM ----------------
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   // ---------------- FETCH PRODUCTS ----------------
   const fetchProducts = async () => {
-    const res = await API.get("/products");
-    setProducts(res.data);
+    const res = await api.get("/api/v1/products");
+    setProducts(res.data.data); // ✅ ApiResponse fix
   };
 
   // ---------------- FETCH CATEGORIES ----------------
   const fetchCategories = async () => {
-    const res = await API.get("/categories");
+    const res = await api.get("/api/v1/categories");
     setCategories(res.data.data);
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProducts();
     fetchCategories();
   }, []);
+
+  // ---------------- HANDLE BASIC INPUT ----------------
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // ---------------- HANDLE VARIANT CHANGE ----------------
+  const handleVariantChange = (index, field, value) => {
+    const updated = [...form.variants];
+    updated[index][field] = value;
+    setForm({ ...form, variants: updated });
+  };
+
+  // ---------------- ADD VARIANT ----------------
+  const addVariant = () => {
+    setForm({
+      ...form,
+      variants: [...form.variants, { weight: "", price: "", stock: "" }],
+    });
+  };
+
+  // ---------------- REMOVE VARIANT ----------------
+  const removeVariant = (index) => {
+    const updated = form.variants.filter((_, i) => i !== index);
+    setForm({ ...form, variants: updated });
+  };
 
   // ---------------- ADD CATEGORY ----------------
   const addCategory = async () => {
     if (!newCategory) return;
 
-    await API.post("/categories", { name: newCategory });
+    await api.post("/api/v1/categories", { name: newCategory });
     setNewCategory("");
     fetchCategories();
   };
@@ -58,30 +77,32 @@ export default function Admin() {
 
     data.append("name", form.name);
     data.append("description", form.description);
-    data.append("price", form.price);
-    data.append("stock", form.stock);
-    data.append("image", form.image);
-    data.append("category", form.category); // ⭐ ObjectId
+    data.append("category", form.category);
 
-    await API.post("/products", data);
+    data.append("variants", JSON.stringify(form.variants));
+
+    form.images.forEach((img) => {
+      data.append("images", img);
+    });
+
+    await api.post("/api/v1/products", data);
 
     setForm({
       name: "",
       description: "",
-      price: "",
-      stock: "",
-      image: "",
-      category: ""
+      category: "",
+      images: [],
+      variants: [{ weight: "", price: "", stock: "" }],
     });
 
-     fileRef.current.value = "";
+    if (fileRef.current) fileRef.current.value = "";
 
     fetchProducts();
   };
 
   // ---------------- DELETE PRODUCT ----------------
   const deleteProduct = async (id) => {
-    await API.delete(`/products/${id}`);
+    await api.delete(`/api/v1/products/${id}`);
     fetchProducts();
   };
 
@@ -102,13 +123,12 @@ export default function Admin() {
 
           <button
             onClick={addCategory}
-            className="bg-blue-600 text-white px-4 rounded"
+            className="bg-black text-white px-4 rounded"
           >
             Add
           </button>
         </div>
       </div>
-
 
       {/* ================= PRODUCT FORM ================= */}
       <div className="bg-white shadow p-6 rounded-lg max-w-lg">
@@ -132,7 +152,6 @@ export default function Admin() {
             className="border p-2 w-full rounded"
           />
 
-          {/* CATEGORY DROPDOWN ⭐ */}
           <select
             name="category"
             value={form.category}
@@ -140,39 +159,80 @@ export default function Admin() {
             className="border p-2 w-full rounded"
           >
             <option value="">Select Category</option>
-            {categories.map(cat => (
+            {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name}
               </option>
             ))}
           </select>
 
-          <input
-            name="price"
-            type="number"
-            placeholder="Price"
-            value={form.price}
-            onChange={handleChange}
-            className="border p-2 w-full rounded"
-          />
+          {/* ---------------- VARIANTS ---------------- */}
+          <h3 className="font-semibold mt-4">Variants</h3>
 
-          <input
-            ref={fileRef}
-            type="file"
-            onChange={(e) =>
-              setForm({ ...form, image: e.target.files[0] })
-            }
-            className="border p-2 w-full rounded"
-          />
+          {form.variants.map((variant, index) => (
+            <div key={index} className="flex gap-2 items-center">
 
+              <input
+                placeholder="Weight (150g)"
+                value={variant.weight}
+                onChange={(e) =>
+                  handleVariantChange(index, "weight", e.target.value)
+                }
+                className="border p-2 rounded w-full"
+              />
+
+              <input
+                type="number"
+                placeholder="Price"
+                value={variant.price}
+                onChange={(e) =>
+                  handleVariantChange(index, "price", e.target.value)
+                }
+                className="border p-2 rounded w-full"
+              />
+
+              <input
+                type="number"
+                placeholder="Stock"
+                value={variant.stock}
+                onChange={(e) =>
+                  handleVariantChange(index, "stock", e.target.value)
+                }
+                className="border p-2 rounded w-full"
+              />
+
+              {form.variants.length > 1 && (
+                <button
+                  onClick={() => removeVariant(index)}
+                  className="text-red-500 text-sm"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={addVariant}
+            className="text-sm text-black mt-2"
+          >
+            + Add Variant
+          </button>
+
+          {/* ---------------- IMAGES ---------------- */}
           <input
-            name="stock"
-            type="number"
-            placeholder="Stock"
-            value={form.stock}
-            onChange={handleChange}
-            className="border p-2 w-full rounded"
-          />
+  ref={fileRef}
+  type="file"
+  multiple
+  onChange={(e) =>
+    setForm((prev) => ({
+      ...prev,
+      images: [...prev.images, ...Array.from(e.target.files)]
+    }))
+  }
+  className="border p-2 w-full rounded"
+/>
 
           <button
             onClick={addProduct}
@@ -183,29 +243,32 @@ export default function Admin() {
         </div>
       </div>
 
-
       {/* ================= PRODUCT TABLE ================= */}
       <div className="bg-white shadow p-6 rounded-lg">
         <h2 className="text-xl font-bold mb-4">Products</h2>
 
         <table className="w-full">
           <thead>
-            <tr className="border-b">
+            <tr className="border-b text-left">
               <th>Name</th>
               <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
+              <th>Variants</th>
               <th></th>
             </tr>
           </thead>
 
           <tbody>
-            {products.map(p => (
+            {products.map((p) => (
               <tr key={p._id} className="border-b">
                 <td>{p.name}</td>
                 <td>{p.category?.name}</td>
-                <td>₹{p.price}</td>
-                <td>{p.stock}</td>
+                <td>
+                  {p.variants?.map((v) => (
+                    <div key={v.weight}>
+                      {v.weight} — ₹{v.price} ({v.stock})
+                    </div>
+                  ))}
+                </td>
                 <td>
                   <button
                     onClick={() => deleteProduct(p._id)}

@@ -1,93 +1,85 @@
-import React, { useEffect, useState } from 'react'
-import Carousel from './Carousel'
-import { Link } from 'react-router-dom';
-import ProductCard from './ProductCard';
-import ProductSection from './ProductSection'
-import axios from 'axios';
-const categories = [
-  { name: "electronics", img: "/categories/electronic.png" },
-  { name: "Mobiles", img: "/categories/mobile.png" },
-  { name: "TV & Appliances", img: "/categories/washing.png" },
-  { name: "Fashion", img: "/categories/fashion.png" },
-  { name: "Home & Kitchen", img: "/categories/home.png" },
-  { name: "Beauty & Toys", img: "/categories/beauty.png" },
-  { name: "Furniture", img: "/categories/furniture.png" },
-  { name: "Grocery", img: "/categories/grocery.png" }
-];
- const API=axios.create({
-   baseURL:"/api/v1",
-   withCredentials:true
- })
+import { Link } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import ProductSection from "./ProductSection";
+import api from "../utils/api";
+
 function Hero() {
-  const [products,setProducts]=useState([])
+  const [products, setProducts] = useState([]);
 
+  useEffect(() => {
+  api
+    .get("/api/v1/products")
+    .then((res) => setProducts(res.data.data))
+    .catch((err) => console.log(err));
+}, []);
 
-  useEffect(()=>{
-    API.get("/products")
-    .then(res=>setProducts(res.data))
-    .catch(err=>console.log(err)
-    )
-  },[])
-  const carouselProducts = products.slice(0,5)
-  const electronicsProducts = products.filter(
-        p => p.category?.toLowerCase() === "electronics"
-   );
   return (
-    <div className="w-full">
-      <Carousel autoSlide autoSlideInterval={3000}>
-        {carouselProducts.map(product => (
-          <div
-            key={product._id}
-            className="h-[400px] flex items-center justify-center bg-red-600"
-          >
+    <>
+      {/* HERO SECTION */}
+      <section className="w-full bg-gradient-to-r from-[#FFF8EE] via-[#F8EDE3] to-[#F3E5D6]">
+        <div className="max-w-7xl mx-auto px-10 py-24 grid md:grid-cols-2 items-center gap-16">
+
+          {/* LEFT CONTENT */}
+          <div>
+            <h1 className="text-6xl md:text-7xl font-extrabold text-[#6B3E26] leading-tight tracking-tight">
+              Crunch Smarter.
+            </h1>
+
+            <p className="mt-6 text-5xl md:text-6xl font-bold text-black max-w-xl leading-tight">
+              Premium roasted makhana crafted for guilt-free indulgence.
+            </p>
+
+            <p className="mt-4 text-lg text-gray-600 max-w-lg">
+              Roasted. Not fried. No preservatives.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href="#products"
+                className="bg-[#C48A3A] hover:bg-[#b5782f] shadow-md hover:shadow-lg transition-all duration-300 px-7 py-3.5 rounded-full text-white font-semibold"
+              >
+                Shop Now
+              </a>
+
+              <a
+                href="#products"
+                className="border border-[#6B3E26] px-7 py-3.5 rounded-full text-[#6B3E26] font-semibold hover:bg-[#6B3E26] hover:text-white transition-all duration-300"
+              >
+                Explore Flavors
+              </a>
+            </div>
+
+            <p className="mt-6 text-sm text-gray-500 flex gap-4 flex-wrap">
+              <span>✔ 100% Natural</span>
+              <span>✔ Roasted Not Fried</span>
+              <span>✔ No Preservatives</span>
+            </p>
+          </div>
+
+          {/* RIGHT IMAGE */}
+          <div className="flex justify-center md:justify-end">
             <img
-              src={product.image}
-              alt={product.name}
-              className="max-h-[320px] object-contain drop-shadow-2xl"
+              src="/hero/hero1.jpg"
+              alt="Squirll Bites Makhana"
+              className="w-[460px] md:w-[540px] rounded-2xl 
+                         drop-shadow-[0_30px_60px_rgba(0,0,0,0.15)]
+                         hover:scale-105 transition-transform duration-500"
             />
           </div>
-        ))}
-      </Carousel>
-       <h2 className="text-xl font-bold px-8 pt-8">
-         Shop by Category
-        </h2>
 
-      <div className='flex flex-wrap justify-center gap-8 py-8 bg-gray-400'>
-         {categories.map((prod)=>(
-             <Link
-              key={prod.name}
-              to={`/category/${prod.name}`}
-              className='flex flex-col items-center gap-2 px-6 py-4 bg-white rounded-2xl shadow hover:shadow-lg hover:translate-y-1 transition-all duration-300'
-             >
-                 <img src={prod.img} alt={prod.name} />
-                   <span className="text-sm font-medium capitalize">
-                      {prod.name}
-                  </span>
-             </Link>
-         ))}
-      </div>
-      <h2 className='text-3xl font-bold m-1 p-2'>Top Deals</h2>
-       <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
-                {products.map(product=>(
-                 <ProductCard
-                  key={product._id}
-                  product={product}
-                 />
-                ))}
         </div>
-       
-        {/* best value on electronics */}
-       {console.log(products.map(p => p.category))}
-       {console.log(electronicsProducts.map(p=> p.id))}
-       <div className='flex gap-2 overflow-x-auto scrollbar-hide'>
-          <ProductSection 
-          title="Best Value Electronics"
-           products={electronicsProducts}
-          />
-        </div> 
+      </section>
 
-    </div>
-  )
+      {/* PRODUCT SECTION BELOW HERO */}
+      <ProductSection
+        title="Shop Our Range"
+        products={products}
+      />
+    </>
+  );
 }
 
-export default Hero
+export default Hero;
+
+
