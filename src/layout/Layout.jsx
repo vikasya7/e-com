@@ -14,7 +14,6 @@ function Layout() {
       <main className="flex-grow">
         <Outlet />
       </main>
-
       {/* Footer always at bottom */}
       <Footer />
 

@@ -15,6 +15,8 @@ import MyOrders from '../pages/MyOrders'
 import OrderDetails from '../pages/OrderDetails'
 import AdminCoupons from '../pages/AdminCoupons'
 import Contact from '../pages/Contact'
+import BlogDetail from '../pages/BlogDetail'
+import AboutUs from '../pages/AboutUs'
 
 
 function AppRoutes() {
@@ -31,6 +33,8 @@ function AppRoutes() {
             <Route path='/my-orders' element={<MyOrders/>}/>
             <Route path='/my-orders/:id' element={<OrderDetails/>}/>
             <Route path='/contact' element={<Contact/>}/>
+            <Route path='blogs/:slug' element={<BlogDetail/>}/>
+            <Route path='/about' element={<AboutUs/>}/>
             {/* <Route path='/admin' element={<Admin/>}/> */}
         </Route>
 

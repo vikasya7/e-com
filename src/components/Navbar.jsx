@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import useCart from "../context/useCart";
 import useAuth from "../context/useAuth";
 import api from "../utils/api";
@@ -12,6 +12,16 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const handleShopClick = () => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: "products" } });
+    } else {
+      const section = document.getElementById("products");
+      section?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   // Close dropdown when clicked outside
   useEffect(() => {
@@ -28,6 +38,7 @@ function Navbar() {
     try {
       await api.post("/api/v1/users/logout");
       setUser(null);
+      setProfileOpen(false);
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -35,53 +46,37 @@ function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#FFF8EE] shadow-md">
-      <div className="max-w-7xl mx-auto px-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="flex items-center justify-between h-20">
-
           {/* LOGO */}
           <Link to="/" className="flex items-center">
             <img
               src="/logo.png"
               alt="Squirll Bites"
-              className="h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+              className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
           </Link>
 
           {/* DESKTOP NAV */}
           <div className="hidden md:flex items-center gap-10 font-medium text-[#6B3E26]">
-            <NavLink
-              to="/"
-              className="relative hover:text-[#C48A3A] transition"
-            >
+            <NavLink to="/" className="hover:text-[#C48A3A] transition">
               Home
             </NavLink>
-
-            <NavLink
-              to="/shop"
-              className="relative hover:text-[#C48A3A] transition"
+            <button
+              onClick={handleShopClick}
+              className="hover:text-[#C48A3A] transition"
             >
               Shop
-            </NavLink>
-
-            <NavLink
-              to="/about"
-              className="relative hover:text-[#C48A3A] transition"
-            >
+            </button>
+            <NavLink to="/about" className="hover:text-[#C48A3A] transition">
               About Us
             </NavLink>
-
-            <NavLink
-              to="/contact"
-              className="relative hover:text-[#C48A3A] transition"
-            >
+            <NavLink to="/contact" className="hover:text-[#C48A3A] transition">
               Contact
             </NavLink>
 
             {user?.role === "admin" && (
-              <NavLink
-                to="/admin"
-                className="hover:text-[#C48A3A] transition"
-              >
+              <NavLink to="/admin" className="hover:text-[#C48A3A] transition">
                 Admin
               </NavLink>
             )}
@@ -89,7 +84,6 @@ function Navbar() {
 
           {/* RIGHT SECTION */}
           <div className="flex items-center gap-6">
-
             {/* CART */}
             <Link to="/cart" className="relative">
               <FaShoppingCart
@@ -105,19 +99,12 @@ function Navbar() {
 
             {/* AUTH SECTION */}
             {!user ? (
-              <div className="hidden md:flex gap-4">
+              <div className="hidden md:flex">
                 <Link
                   to="/login"
-                  className="px-5 py-2 border border-[#6B3E26] text-[#6B3E26] rounded-full hover:bg-[#6B3E26] hover:text-white transition"
+                  className="px-6 py-2 bg-[#6B3E26] text-white rounded-full hover:bg-[#5A321D] transition shadow-md hover:shadow-lg"
                 >
-                  Login
-                </Link>
-
-                <Link
-                  to="/signup"
-                  className="px-5 py-2 bg-[#6B3E26] text-white rounded-full hover:bg-[#5A321D] transition"
-                >
-                  Signup
+                  Continue
                 </Link>
               </div>
             ) : (
@@ -138,18 +125,15 @@ function Navbar() {
 
                 {profileOpen && (
                   <div className="absolute right-0 mt-4 w-56 bg-white rounded-xl shadow-2xl overflow-hidden border animate-fadeIn">
-
                     <div className="px-4 py-3 border-b bg-[#FFF8EE]">
                       <p className="font-semibold text-[#6B3E26]">
                         {user.fullname}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {user.email}
-                      </p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
 
                     <Link
-                      to="/orders"
+                      to="/my-orders"
                       className="block px-4 py-3 text-sm hover:bg-[#FFF1DD] transition"
                     >
                       My Orders
@@ -202,23 +186,15 @@ function Navbar() {
             </NavLink>
 
             {!user ? (
-              <>
-                <NavLink to="/login" className="block">
-                  Login
-                </NavLink>
-                <NavLink to="/signup" className="block">
-                  Signup
-                </NavLink>
-              </>
+              <NavLink to="/login" className="block font-semibold">
+                Continue
+              </NavLink>
             ) : (
               <>
                 <NavLink to="/orders" className="block">
                   My Orders
                 </NavLink>
-                <button
-                  onClick={handleLogout}
-                  className="block text-red-500"
-                >
+                <button onClick={handleLogout} className="block text-red-500">
                   Logout
                 </button>
               </>
@@ -231,4 +207,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

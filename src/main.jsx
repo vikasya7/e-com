@@ -7,11 +7,12 @@ import AppThemeProvider from './context/ThemeProvider.jsx'
 import { CartProvider } from './context/CartProvider.jsx'
 import { AuthProvider } from './context/AuthProvider.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { HelmetProvider } from 'react-helmet-async'
 
 
 
 createRoot(document.getElementById('root')).render(
-
+<HelmetProvider>
   <AppThemeProvider>
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <AuthProvider>
@@ -23,5 +24,6 @@ createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </GoogleOAuthProvider>
   </AppThemeProvider>
+</HelmetProvider>
 
 )
