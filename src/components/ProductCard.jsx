@@ -54,6 +54,8 @@ function ProductCard({ product }) {
               itemId: product._id,
               weight: defaultVariant.weight,
               price: defaultVariant.price,
+              name: product.name,
+              image: product.images?.[0]?.url, 
               quantity: 1,
             });
 

@@ -2,13 +2,39 @@
 import { useState, useEffect, useMemo } from "react";
 import CartContext from "./CartContext";
 import api from "../utils/api";
+import useAuth from "./useAuth";
 
 export const CartProvider = ({ children }) => {
+  const {user}=useAuth()
   const [items, setItems] = useState([]);
   const [bill, setBill] = useState(0);
+  
+  // helper calculate bill
+  const calculateBill = (cartItems = []) => {
+  const safeItems = Array.isArray(cartItems)
+    ? cartItems.filter(
+        (item) =>
+          item &&
+          typeof item.price === "number" &&
+          typeof item.quantity === "number"
+      )
+    : [];
 
+  const total = safeItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  setBill(total);
+};
   // 🔥 Fetch Cart
   const fetchCart = async () => {
+    if(!user){
+      const localCart=JSON.parse(localStorage.getItem("cart")) || []
+      setItems(localCart)
+      calculateBill(localCart)
+      return;
+    }
     try {
       const res = await api.get("/api/v1/users/cart");
 
@@ -19,17 +45,47 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
+  
+
+  
+  
 
   // 🔥 Derived total count
   const totalCount = useMemo(() => {
-    return items.reduce((acc, item) => acc + item.quantity, 0);
-  }, [items]);
+  return items
+    ?.filter((item) => item && item.quantity)
+    .reduce((acc, item) => acc + item.quantity, 0);
+}, [items]);
 
   // 🔥 Add To Cart (SECURE — no price from frontend)
-  const addToCart = async ({ itemId, weight, quantity = 1 }) => {
+  const addToCart = async ({ itemId, weight, quantity = 1,name,image,price }) => {
+    console.log("USER:", user);
+    if(!user){
+      // guest cart
+      console.log("Image being stored:", image);
+      const localCart=JSON.parse(localStorage.getItem("cart")) || []
+      const index=localCart.findIndex(
+        (item)=>item.itemId===itemId && item.weight===weight
+      )
+      if(index>-1){
+        localCart[index].quantity+=quantity;
+      }else{
+        localCart.push({
+          itemId,
+          weight,
+          quantity,
+          price:price,
+          name:name,
+          image:image
+        })
+        //console.log(image);
+        
+      }
+      localStorage.setItem("cart",JSON.stringify(localCart))
+      setItems(localCart);
+      calculateBill(localCart);
+      return;
+    }
     try {
       await api.post("/api/v1/users/cart/add", { itemId, weight, quantity, });
 
@@ -43,8 +99,23 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = async (itemId, weight, quantity) => {
     if (quantity < 1) return;
 
+    if(!user){
+      const localCart=JSON.parse(localStorage.getItem("cart")) || []
+      const updatedCart=localCart.map((item)=>{
+        if(!item) return null
+       if (item.itemId === itemId && item.weight === weight) {
+        return { ...item, quantity };
+      }
+       return item; 
+      }).filter(Boolean)
+      localStorage.setItem("cart",JSON.stringify(updatedCart))
+      setItems(updatedCart)
+      calculateBill(updatedCart)
+      return ;
+    }
+
     try {
-      await api.put("/api/v1/users/cart/add", { itemId, weight, quantity, });
+      await api.put("/api/v1/users/cart/update", { itemId, weight, quantity, });
 
       await fetchCart();
     } catch (err) {
@@ -54,6 +125,17 @@ export const CartProvider = ({ children }) => {
 
   // 🔥 Remove From Cart
   const removeFromCart = async (itemId, weight) => {
+
+    if(!user){
+      const localCart=JSON.parse(localStorage.getItem("cart")) || []
+
+      const updatedCart=localCart.filter((item)=>!(item.itemId===itemId && item.weight===weight))
+
+      localStorage.setItem("cart",JSON.stringify(updatedCart))
+      setItems(updatedCart)
+      calculateBill(updatedCart)
+      return;
+    }
     try {
       await api.post("/api/v1/users/cart/remove", {
       itemId,
@@ -66,19 +148,44 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const mergeGuestCartToBackend=async()=>{
+    const localCart=JSON.parse(localStorage.getItem("cart")) 
+    if(!localCart || localCart.length===0) return;
+    try{
+      for(const item of localCart){
+        await api.post("/api/v1/users/cart/add",{
+          itemId:item.itemId,
+          weight:item.weight,
+          quantity:item.quantity
+        })
+      }
+
+      // clear guest cart
+      localStorage.removeItem("cart")
+    } catch(err){
+      console.log("Cart merge error",err.response?.data || err.message)
+    }
+  }
+  useEffect(() => {
+    const syncCart=async()=>{
+      if(user){
+        await mergeGuestCartToBackend();
+      }
+      await fetchCart();
+    };
+    syncCart();
+  }, [user]);
+
   // 🔥 Memoized context value
-  const value = useMemo(
-    () => ({
-      items,
-      bill,
-      totalCount,
-      fetchCart,
-      addToCart,
-      updateQuantity,
-      removeFromCart,
-    }),
-    [items, bill, totalCount],
-  );
+  const value = {
+  items,
+  bill,
+  totalCount,
+  fetchCart,
+  addToCart,
+  updateQuantity,
+  removeFromCart,
+};
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
