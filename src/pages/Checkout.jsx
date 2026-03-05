@@ -1,9 +1,10 @@
-
 import { useEffect, useState } from "react";
 import useCart from "../context/useCart";
 import { startPayment } from "../utils/razorpay";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 
 function Checkout() {
   const { items, bill } = useCart();
@@ -14,6 +15,7 @@ function Checkout() {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponMessage, setCouponMessage] = useState("");
+  const [showAddressList, setShowAddressList] = useState(false);
   const shipping = bill > 500 ? 0 : 50;
   const finalTotal = bill + shipping - discount;
   const handleApplyCoupon = async () => {
@@ -38,7 +40,8 @@ function Checkout() {
 
         setAddresses(data.data);
         const defaultAddress = data.data.find((a) => a.isDefault);
-        setSelected(defaultAddress?._id);
+        setSelected(defaultAddress?._id || data.data[0]?._id);
+        setShowAddressList(false);
       } catch (error) {
         console.log(error);
       }
@@ -50,7 +53,7 @@ function Checkout() {
     if (!selected) return;
     setLoading(true);
     try {
-      await startPayment(selected);
+      await startPayment(selected,navigate);
     } catch (error) {
       console.log(error);
     }
@@ -68,9 +71,20 @@ function Checkout() {
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-14">
         {/* ================= LEFT SIDE - ADDRESS ================= */}
         <div>
-          <h2 className="text-3xl font-bold mb-10 text-gray-900">
-            Delivery Address
-          </h2>
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-3xl font-bold mb-10 text-gray-900">
+              Delivery Address
+            </h2>
+
+            {selected && !showAddressList && (
+              <button
+                onClick={() => setShowAddressList(true)}
+                className="text-sm underline text-gray-600 hover:text-black"
+              >
+                Change
+              </button>
+            )}
+          </div>
 
           {addresses.length === 0 ? (
             <div className="bg-white p-8 rounded-3xl shadow-md">
@@ -85,48 +99,103 @@ function Checkout() {
               </button>
             </div>
           ) : (
-            addresses.map((addr) => (
-              <div
-                key={addr._id}
-                onClick={() => setSelected(addr._id)}
-                className={`p-6 mb-6 rounded-3xl border transition cursor-pointer ${
-                  selected === addr._id
-                    ? "border-black bg-white shadow-lg"
-                    : "border-gray-200 bg-white hover:shadow-md"
-                }`}
-              >
-                <div className="flex gap-4">
-                  <input
-                    type="radio"
-                    checked={selected === addr._id}
-                    onChange={() => setSelected(addr._id)}
-                    className="mt-2 accent-black"
-                  />
+            <AnimatePresence mode="wait">
+              {!showAddressList && selected && (
+                <motion.div
+                  key="summary"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white p-8 rounded-3xl shadow-md"
+                >
+                  {(() => {
+                    const addr = addresses.find((a) => a._id === selected);
+                    if (!addr) return null;
 
-                  <div>
-                    <p className="font-semibold text-lg text-gray-900">
-                      {addr.fullName}
-                    </p>
+                    return (
+                      <>
+                        <p className="font-semibold text-lg text-gray-900">
+                          {addr.fullName}
+                        </p>
+                        <p className="text-gray-600 text-sm mt-2">
+                          {addr.street}, {addr.city}
+                        </p>
+                        <p className="text-gray-600 text-sm">
+                          {addr.state} - {addr.pincode}
+                        </p>
+                        <p className="text-gray-600 text-sm">{addr.phone}</p>
 
-                    <p className="text-gray-600 text-sm">
-                      {addr.street}, {addr.city}
-                    </p>
+                        {addr.isDefault && (
+                          <span className="inline-block mt-3 px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
+                            Default
+                          </span>
+                        )}
+                      </>
+                    );
+                  })()}
+                </motion.div>
+              )}
+              {showAddressList && (
+                <motion.div
+                  key="list"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {addresses.map((addr) => (
+                    <div
+                      key={addr._id}
+                      onClick={() => {
+                        setSelected(addr._id);
+                        setShowAddressList(false);
+                      }}
+                      className={`p-6 mb-6 rounded-3xl border transition cursor-pointer ${
+                        selected === addr._id
+                          ? "border-black bg-white shadow-lg"
+                          : "border-gray-200 bg-white hover:shadow-md"
+                      }`}
+                    >
+                      <div className="flex gap-4">
+                        <input
+                          type="radio"
+                          checked={selected === addr._id}
+                          onChange={() => setSelected(addr._id)}
+                          className="mt-2 accent-black"
+                        />
 
-                    <p className="text-gray-600 text-sm">
-                      {addr.state} - {addr.pincode}
-                    </p>
+                        <div>
+                          <p className="font-semibold text-lg text-gray-900">
+                            {addr.fullName}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            {addr.street}, {addr.city}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            {addr.state} - {addr.pincode}
+                          </p>
+                          <p className="text-gray-600 text-sm">{addr.phone}</p>
 
-                    <p className="text-gray-600 text-sm">{addr.phone}</p>
+                          {addr.isDefault && (
+                            <span className="inline-block mt-3 px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
+                              Default
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
 
-                    {addr.isDefault && (
-                      <span className="inline-block mt-3 px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
-                        Default
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="w-full mt-4 py-4 border-2 border-dashed border-gray-300 rounded-3xl text-gray-600 hover:border-black hover:text-black transition"
+                  >
+                    + Add New Address
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           )}
         </div>
 

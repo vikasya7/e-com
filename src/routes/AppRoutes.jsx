@@ -17,6 +17,7 @@ import AdminCoupons from '../pages/AdminCoupons'
 import Contact from '../pages/Contact'
 import BlogDetail from '../pages/BlogDetail'
 import AboutUs from '../pages/AboutUs'
+import OrderSuccess from '../pages/OrderSuccess'
 
 
 function AppRoutes() {
@@ -35,6 +36,7 @@ function AppRoutes() {
             <Route path='/contact' element={<Contact/>}/>
             <Route path='blogs/:slug' element={<BlogDetail/>}/>
             <Route path='/about' element={<AboutUs/>}/>
+            <Route path='/order-success/:id' element={<OrderSuccess/>}/>
             {/* <Route path='/admin' element={<Admin/>}/> */}
         </Route>
 

@@ -20,7 +20,7 @@ function Login() {
     try {
       setLoading(true);
 
-      await api.post("/api/v1/users/auth", {
+      await api.post("/api/v1/users/login", {
         email,
         password,
       });
