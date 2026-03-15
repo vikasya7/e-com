@@ -11,7 +11,7 @@ function Footer() {
         {/* BRAND */}
         <div>
           <img
-            src="/logo.png"
+            src="/logo1.png"
             alt="Squirll Bites"
             className="h-12 mb-4 brightness-110"
           />

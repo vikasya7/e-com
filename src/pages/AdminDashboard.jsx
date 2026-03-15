@@ -14,7 +14,20 @@ export default function AdminDashboard() {
   const [message, setMessage] = useState("");
   const [orders, setOrders] = useState([]);
   const [confirmingId, setConfirmingId] = useState(null);
+  const [products, setProducts] = useState([]);
+  
+  const fetchProducts = async () => {
+  try {
+    const res = await api.get("/api/v1/admin/product-stock");
+    setProducts(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+useEffect(() => {
+  fetchProducts();
+}, []);
   useEffect(() => {
     if (user && user.role !== "admin") {
       navigate("/");
@@ -25,6 +38,7 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const res = await api.get("/api/v1/admin/stats");
+        console.log(res.data)
         setStats(res.data); // assuming ApiResponse
       } catch (error) {
         console.log(error);
@@ -59,6 +73,15 @@ export default function AdminDashboard() {
       const res = await api.get("/api/v1/admin/orders");
 
       setOrders(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const packOrder = async (id) => {
+    try {
+      await api.patch(`/api/v1/admin/orders/${id}/pack`);
+      fetchOrders();
     } catch (error) {
       console.log(error);
     }
@@ -105,6 +128,43 @@ export default function AdminDashboard() {
           value={loadingStats ? "..." : `₹${stats.revenue || 0}`}
         />
       </div>
+      <div className="mt-16">
+  <h2 className="text-2xl font-semibold mb-6">Product Stock</h2>
+
+  <div className="grid md:grid-cols-3 gap-6">
+    {products.map((product) => {
+      const totalStock = product.variants.reduce(
+        (sum, v) => sum + v.stock,
+        0
+      );
+
+      return (
+        <div
+          key={product._id}
+          className="bg-white p-6 rounded-xl shadow-sm border"
+        >
+          <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+
+          <p className="text-sm text-gray-500 mb-4">
+            Total Stock: {totalStock}
+          </p>
+
+          <div className="space-y-2">
+            {product.variants.map((variant, index) => (
+              <div
+                key={index}
+                className="flex justify-between text-sm bg-gray-50 p-2 rounded"
+              >
+                <span>{variant.weight}</span>
+                <span>{variant.stock}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
 
       {/* Orders Table UI */}
 
@@ -128,6 +188,7 @@ export default function AdminDashboard() {
                   {order.orderStatus}
                 </span>
 
+                {/* Confirm Button */}
                 {order.orderStatus === "placed" && (
                   <button
                     onClick={() => confirmOrder(order._id)}
@@ -135,6 +196,16 @@ export default function AdminDashboard() {
                     className="bg-green-600 text-white px-4 py-2 rounded"
                   >
                     {confirmingId === order._id ? "Confirming..." : "Confirm"}
+                  </button>
+                )}
+
+                {/* Pack Button */}
+                {order.orderStatus === "confirmed" && (
+                  <button
+                    onClick={() => packOrder(order._id)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
+                  >
+                    Pack Order
                   </button>
                 )}
               </div>

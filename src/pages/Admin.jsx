@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../utils/api";
 
-
-
 export default function Admin() {
   const fileRef = useRef(null);
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
+  const [stockInputs, setStockInputs] = useState({});
 
   const [form, setForm] = useState({
     name: "",
@@ -22,6 +21,34 @@ export default function Admin() {
   const fetchProducts = async () => {
     const res = await api.get("/api/v1/products");
     setProducts(res.data.data); // ✅ ApiResponse fix
+  };
+
+  const handleStockInput = (productId, weight, value) => {
+    setStockInputs((prev) => ({
+      ...prev,
+      [`${productId}-${weight}`]: value,
+    }));
+  };
+  const increaseStock = async (productId, weight) => {
+    const quantity = stockInputs[`${productId}-${weight}`];
+
+    if (!quantity) return;
+
+    try {
+      await api.patch(`/api/v1/admin/products/${productId}/stock`, {
+        weight,
+        quantity,
+      });
+
+      fetchProducts();
+
+      setStockInputs((prev) => ({
+        ...prev,
+        [`${productId}-${weight}`]: "",
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // ---------------- FETCH CATEGORIES ----------------
@@ -108,7 +135,6 @@ export default function Admin() {
 
   return (
     <div className="p-8 space-y-10">
-
       {/* ================= CATEGORY SECTION ================= */}
       <div className="bg-white shadow p-6 rounded-lg max-w-lg">
         <h2 className="text-xl font-bold mb-4">Add Category</h2>
@@ -135,7 +161,6 @@ export default function Admin() {
         <h2 className="text-xl font-bold mb-4">Add Product</h2>
 
         <div className="space-y-3">
-
           <input
             name="name"
             placeholder="Product Name"
@@ -171,7 +196,6 @@ export default function Admin() {
 
           {form.variants.map((variant, index) => (
             <div key={index} className="flex gap-2 items-center">
-
               <input
                 placeholder="Weight (150g)"
                 value={variant.weight}
@@ -222,17 +246,17 @@ export default function Admin() {
 
           {/* ---------------- IMAGES ---------------- */}
           <input
-  ref={fileRef}
-  type="file"
-  multiple
-  onChange={(e) =>
-    setForm((prev) => ({
-      ...prev,
-      images: [...prev.images, ...Array.from(e.target.files)]
-    }))
-  }
-  className="border p-2 w-full rounded"
-/>
+            ref={fileRef}
+            type="file"
+            multiple
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+                images: [...prev.images, ...Array.from(e.target.files)],
+              }))
+            }
+            className="border p-2 w-full rounded"
+          />
 
           <button
             onClick={addProduct}
@@ -264,8 +288,31 @@ export default function Admin() {
                 <td>{p.category?.name}</td>
                 <td>
                   {p.variants?.map((v) => (
-                    <div key={v.weight}>
-                      {v.weight} — ₹{v.price} ({v.stock})
+                    <div key={v.weight} className="flex items-center gap-3">
+                      <span
+                        className={
+                          v.stock === 0 ? "text-red-500 font-bold" : ""
+                        }
+                      >
+                        {v.weight} — ₹{v.price} ({v.stock})
+                      </span>
+
+                      <input
+                        type="number"
+                        placeholder="+ stock"
+                        value={stockInputs[`${p._id}-${v.weight}`] || ""}
+                        onChange={(e) =>
+                          handleStockInput(p._id, v.weight, e.target.value)
+                        }
+                        className="border p-1 w-20 rounded"
+                      />
+
+                      <button
+                        onClick={() => increaseStock(p._id, v.weight)}
+                        className="bg-green-600 text-white px-2 py-1 rounded text-xs"
+                      >
+                        Add
+                      </button>
                     </div>
                   ))}
                 </td>
@@ -282,8 +329,6 @@ export default function Admin() {
           </tbody>
         </table>
       </div>
-
     </div>
   );
 }
-

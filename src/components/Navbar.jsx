@@ -51,7 +51,7 @@ function Navbar() {
           {/* LOGO */}
           <Link to="/" className="flex items-center">
             <img
-              src="/logo.png"
+              src="/logo1.png"
               alt="Squirll Bites"
               className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
