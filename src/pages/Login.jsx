@@ -55,7 +55,7 @@ function Login() {
         
         {/* Heading */}
         <h2 className="text-3xl font-bold text-[#6B3E26] text-center">
-          Welcome to Squirll Bites 🐿️
+          Welcome to Squrll Bites 🐿️
         </h2>
 
         <p className="text-gray-500 text-center mt-2 mb-8">

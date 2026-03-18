@@ -82,7 +82,7 @@ function Footer() {
       </p>
 
       <p className="text-sm mb-4">
-        📞 +91 98765 43210
+        📞 +91 76550 57620
       </p>
 
       {/* SOCIALS */}
