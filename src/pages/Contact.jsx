@@ -4,7 +4,6 @@ function Contact() {
   return (
     <div className="bg-[#FFF8EE] min-h-screen py-16 px-6 md:px-20">
       <div className="max-w-6xl mx-auto">
-
         {/* ===== HERO ===== */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-[#6B3E26]">
@@ -18,7 +17,6 @@ function Contact() {
 
         {/* ===== GRID ===== */}
         <div className="grid md:grid-cols-2 gap-12">
-
           {/* ================= Registered Office ================= */}
           <div className="bg-white rounded-3xl shadow-lg p-10 border border-[#f1e3d3]">
             <h2 className="text-2xl font-semibold text-[#6B3E26] mb-6">
@@ -26,16 +24,25 @@ function Contact() {
             </h2>
 
             <p className="text-gray-700 leading-relaxed">
-              PLOT NO-404, R.PL.NO 52(P), GHATIKIA, <br />
-              Near DAV School, Kalinganagar <br />
-              Bhubaneswar, Odisha <br />
-              Pincode - 752054
+              2nd Floor, Flat No-B1, Rajshree Tower <br />
+              Plot No-409 (Old Plot No-404), Rev. Plot No-52 (P) <br />
+              Ghatikia, Kalinganagar, PO-Bharatpur <br />
+              Bhubaneswar, Khorda, Odisha <br />
+              India - 751029
             </p>
+            <div className="mt-6 rounded-2xl overflow-hidden border">
+              <iframe
+                src="https://www.google.com/maps?q=Rajshree+Tower+Ghatikia+Kalinganagar+Bhubaneswar+751029&output=embed"
+                width="100%"
+                height="250"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
 
             <div className="mt-6 space-y-3">
-              <p className="text-gray-800 font-medium">
-                📞 7655057620
-              </p>
+              <p className="text-gray-800 font-medium">📞 7655057620</p>
 
               <p>
                 📧{" "}
@@ -76,16 +83,25 @@ function Contact() {
             </h2>
 
             <p className="text-gray-700 leading-relaxed">
-              Raniganj, Pratapgarh <br />
-              Devgarh Kamasin, Uttar Pradesh <br />
-              Near Kamasin Primary School <br />
-              Pincode - 230304
+              00, Sarai Sultani, Raniganj <br />
+              Pratapgarh, Uttar Pradesh - 230304 <br />
+              <span className="block mt-2 text-[#6B3E26] font-medium">
+                📍 Landmark: Raniganj Chirkutti Square
+              </span>
             </p>
+            <div className="mt-6 rounded-2xl overflow-hidden border">
+  <iframe
+    src="https://www.google.com/maps?q=Raniganj+Chirkutti+Square+Pratapgarh+Uttar+Pradesh+230304&output=embed"
+    width="100%"
+    height="250"
+    style={{ border: 0 }}
+    allowFullScreen=""
+    loading="lazy"
+  ></iframe>
+</div>
 
             <div className="mt-6 space-y-3">
-              <p className="text-gray-800 font-medium">
-                📞 7655057620
-              </p>
+              <p className="text-gray-800 font-medium">📞 7655057620</p>
 
               <p>
                 📧{" "}
@@ -98,7 +114,6 @@ function Contact() {
               </p>
             </div>
           </div>
-
         </div>
 
         {/* ===== Bottom CTA ===== */}
@@ -114,7 +129,6 @@ function Contact() {
             Email Our Support Team
           </a>
         </div>
-
       </div>
     </div>
   );
