@@ -13,7 +13,7 @@ function TrustSection() {
           transition={{ duration: 0.5 }}
           className="text-3xl md:text-4xl font-bold text-[#6B3E26] mb-12"
         >
-          Why Squirll Bites?
+          Why Squrll Bites?
         </motion.h3>
 
         <div className="grid md:grid-cols-3 gap-10">
