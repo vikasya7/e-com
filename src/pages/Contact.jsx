@@ -32,14 +32,22 @@ function Contact() {
             </p>
             <div className="mt-6 rounded-2xl overflow-hidden border">
               <iframe
-                src="https://www.google.com/maps?q=Rajshree+Tower+Ghatikia+Kalinganagar+Bhubaneswar+751029&output=embed"
+                src="https://www.google.com/maps?q=Squrll+Bites+Pvt+Ltd+Ghatikia+Bhubaneswar&output=embed"
                 width="100%"
                 height="250"
                 style={{ border: 0 }}
-                allowFullScreen=""
                 loading="lazy"
               ></iframe>
             </div>
+
+            {/* Directions */}
+            <a
+              href="https://www.google.com/maps/dir/20.294637,85.74481/Squrll+Bites+Pvt.+Ltd.,+R.P.L,+Plot+No-404,+Ghatikia,+Bhubaneswar,+Odisha+752054"
+              target="_blank"
+              className="inline-block mt-4 text-[#C48A3A] hover:underline"
+            >
+              Get Directions →
+            </a>
 
             <div className="mt-6 space-y-3">
               <p className="text-gray-800 font-medium">📞 7655057620</p>
@@ -90,15 +98,15 @@ function Contact() {
               </span>
             </p>
             <div className="mt-6 rounded-2xl overflow-hidden border">
-  <iframe
-    src="https://www.google.com/maps?q=Raniganj+Chirkutti+Square+Pratapgarh+Uttar+Pradesh+230304&output=embed"
-    width="100%"
-    height="250"
-    style={{ border: 0 }}
-    allowFullScreen=""
-    loading="lazy"
-  ></iframe>
-</div>
+              <iframe
+                src="https://www.google.com/maps?q=Raniganj+Chirkutti+Square+Pratapgarh+Uttar+Pradesh+230304&output=embed"
+                width="100%"
+                height="250"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
 
             <div className="mt-6 space-y-3">
               <p className="text-gray-800 font-medium">📞 7655057620</p>
