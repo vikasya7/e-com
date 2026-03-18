@@ -32,13 +32,14 @@ function Hero() {
         <div className="relative max-w-7xl mx-auto px-6 md:px-10 py-24 grid md:grid-cols-2 items-center gap-16">
           {/* LEFT CONTENT */}
           <div className="space-y-8">
+            {/* 🔥 Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="text-5xl md:text-6xl font-extrabold text-[#6B3E26] leading-tight"
             >
-              Crunch{" "}
+              Har Break Ka{" "}
               <motion.span
                 className="text-[#C48A3A] font-['Pacifico'] inline-block"
                 animate={{ y: [0, -6, 0], rotate: [0, -2, 0] }}
@@ -48,49 +49,39 @@ function Hero() {
                   ease: "easeInOut",
                 }}
               >
-                Smarter.
+                Bite
               </motion.span>
             </motion.h1>
 
-            <motion.span
-              className="relative inline-block text-[#C48A3A] font-['Pacifico']"
-              animate={{ y: [0, -6, 0] }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+            {/* ✨ Underline */}
+            <motion.svg
+              viewBox="0 0 200 20"
+              className="w-40"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
             >
-              Smarter.
-              {/* Brush underline */}
-              <motion.svg
-                viewBox="0 0 200 20"
-                className="absolute left-0 -bottom-3 w-full"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-              >
-                <motion.path
-                  d="M5 15 Q 100 5 195 15"
-                  stroke="#C48A3A"
-                  strokeWidth="4"
-                  fill="transparent"
-                  strokeLinecap="round"
-                />
-              </motion.svg>
-            </motion.span>
+              <motion.path
+                d="M5 15 Q 100 5 195 15"
+                stroke="#C48A3A"
+                strokeWidth="4"
+                fill="transparent"
+                strokeLinecap="round"
+              />
+            </motion.svg>
 
+            {/* 📝 Description */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
               className="text-lg text-gray-700 max-w-lg"
             >
-              Premium roasted makhana crafted for guilt-free indulgence. Light.
-              Crunchy. Addictively good.
+              Premium roasted makhana for guilt-free snacking. Light, crunchy,
+              and seriously addictive.
             </motion.p>
 
-            {/* CTA */}
+            {/* 🚀 CTA */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -103,7 +94,7 @@ function Hero() {
                 href="#products"
                 className="relative bg-[#C48A3A] px-8 py-4 rounded-full text-white font-semibold overflow-hidden"
               >
-                Taste The Crunch →{/* Glow Pulse */}
+                Get Your Bite →{/* Glow */}
                 <motion.span
                   className="absolute inset-0 bg-[#C48A3A] rounded-full -z-10"
                   animate={{ scale: [1, 1.15, 1] }}
@@ -126,16 +117,22 @@ function Hero() {
               </motion.a>
             </motion.div>
 
-            {/* FUN BADGES */}
+            {/* 🎯 Badges */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="flex gap-6 flex-wrap text-sm text-[#6B3E26] font-medium pt-3"
+              className="flex gap-4 flex-wrap text-sm text-[#6B3E26] font-medium pt-3"
             >
-              <span>🌿 100% Natural</span>
-              <span>🔥 Roasted Not Fried</span>
-              <span>🚫 No Preservatives</span>
+              <span className="bg-[#F3E5D3] px-3 py-1 rounded-full">
+                🌿 100% Natural
+              </span>
+              <span className="bg-[#F3E5D3] px-3 py-1 rounded-full">
+                🔥 Roasted Not Fried
+              </span>
+              <span className="bg-[#F3E5D3] px-3 py-1 rounded-full">
+                🚫 No Preservatives
+              </span>
             </motion.div>
           </div>
 
@@ -197,7 +194,7 @@ function Hero() {
       {/* PRODUCT SECTION BELOW HERO */}
       <ProductSection title="Shop Our Range" products={products} />
 
-      <TrustSection/>
+      <TrustSection />
     </>
   );
 }
