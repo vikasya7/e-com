@@ -535,7 +535,7 @@ function Hero() {
           transition={jumping ? { duration: 0.6, ease: "easeOut" } : {}}
           onClick={handleSqClick}
         >
-          <SquirrelSVG mode={sqMode} sleeping={sqMode === "sleep"}/>
+          <SqurllSVG mode={sqMode} sleeping={sqMode === "sleep"}/>
         </motion.div>
 
         {/* Mode controls */}
