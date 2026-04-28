@@ -600,7 +600,7 @@ function Hero() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
               className="flex flex-wrap gap-3">
               <ProductChip name="Classic Makhana Chiwda" emoji="🌾" delay={0.6}/>
-              <ProductChip name="Squrll Namkeen"         emoji="🧂" delay={0.75}/>
+              <ProductChip name=       emoji="🧂" delay={0.75}/>
               <ProductChip name="Crunch Peanuts"         emoji="🥜" delay={0.9}/>
             </motion.div>
 
