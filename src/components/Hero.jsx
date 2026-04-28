@@ -135,9 +135,9 @@ function PawPrint({ x, flipped, onDone }) {
 }
 
 // ─────────────────────────────────────────────
-// Squirrel SVG — receives animation class names
+// Squrll SVG — receives animation class names
 // ─────────────────────────────────────────────
-function SquirrelSVG({ mode, sleeping }) {
+function SqurllSVG({ mode, sleeping }) {
   // animation styles per part per mode
   const anims = {
     run: {
