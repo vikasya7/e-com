@@ -11,7 +11,7 @@ function AboutUs() {
         <title>About Us | Squrll Bites</title>
         <meta
           name="description"
-          content="Discover the story behind Squirll Bites — premium roasted makhana crafted for mindful, smarter snacking."
+          content="Discover the story behind Squrll Bites — premium roasted makhana crafted for mindful, smarter snacking."
         />
       </Helmet>
 
