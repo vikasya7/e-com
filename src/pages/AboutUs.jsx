@@ -83,7 +83,7 @@ function AboutUs() {
         </div>
       </section>
 
-      {/* WHY SQUIRLL BITES */}
+      {/* WHY SQURLL BITES */}
       <section className="py-28 px-6 bg-white">
         <div className="max-w-6xl mx-auto text-center">
 
