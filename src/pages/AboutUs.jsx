@@ -77,7 +77,7 @@ function AboutUs() {
         <div className="mt-16 flex justify-center">
           <img
             src="/hero/packet.png"  // your uploaded pack image
-            alt="Squirll Bites Classic Makhana Chiwda Pack"
+            alt="Squrll Bites Classic Makhana Chiwda Pack"
             className="w-[260px] md:w-[300px] drop-shadow-xl hover:scale-105 transition duration-500"
           />
         </div>
@@ -88,7 +88,7 @@ function AboutUs() {
         <div className="max-w-6xl mx-auto text-center">
 
           <h2 className="text-4xl font-semibold tracking-tight">
-            Why Squirll Bites
+            Why Squrll Bites
           </h2>
 
           <p className="mt-6 text-gray-600 max-w-2xl mx-auto">
