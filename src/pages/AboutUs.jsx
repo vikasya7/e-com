@@ -8,7 +8,7 @@ function AboutUs() {
 
       {/* SEO */}
       <Helmet>
-        <title>About Us | Squirll Bites</title>
+        <title>About Us | Squrll Bites</title>
         <meta
           name="description"
           content="Discover the story behind Squirll Bites — premium roasted makhana crafted for mindful, smarter snacking."
@@ -23,7 +23,7 @@ function AboutUs() {
 
         <p className="mt-8 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
           We believe snacking should feel indulgent yet intentional.
-          Squirll Bites brings together purity, crunch, and refined taste —
+          Squrll Bites brings together purity, crunch, and refined taste —
           without compromise.
         </p>
       </section>
