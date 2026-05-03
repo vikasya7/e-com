@@ -8,7 +8,7 @@ function AboutUs() {
 
       {/* SEO */}
       <Helmet>
-        <title>About Us | Squrll Bites</title>
+        <title>About Us | Squrlll Bites</title>
         <meta
           name="description"
           content="Discover the story behind Squrll Bites — premium roasted makhana crafted for mindful, smarter snacking."
