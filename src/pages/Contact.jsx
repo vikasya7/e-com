@@ -83,45 +83,6 @@ function Contact() {
               </p>
             </div>
           </div>
-
-          {/* ================= Manufacturing Office ================= */}
-          <div className="bg-white rounded-3xl shadow-lg p-10 border border-[#f1e3d3]">
-            <h2 className="text-2xl font-semibold text-[#6B3E26] mb-6">
-              Manufacturing Office
-            </h2>
-
-            <p className="text-gray-700 leading-relaxed">
-              00, Sarai Sultani, Raniganj <br />
-              Pratapgarh, Uttar Pradesh - 230304 <br />
-              <span className="block mt-2 text-[#6B3E26] font-medium">
-                📍 Landmark: Raniganj Chirkutti Square
-              </span>
-            </p>
-            <div className="mt-6 rounded-2xl overflow-hidden border">
-              <iframe
-                src="https://www.google.com/maps?q=Raniganj+Chirkutti+Square+Pratapgarh+Uttar+Pradesh+230304&output=embed"
-                width="100%"
-                height="250"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-              ></iframe>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              <p className="text-gray-800 font-medium">📞 7655057620</p>
-
-              <p>
-                📧{" "}
-                <a
-                  href="mailto:support@squrllbites.com"
-                  className="text-[#C48A3A] hover:underline"
-                >
-                  support@squrllbites.com
-                </a>
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* ===== Bottom CTA ===== */}
