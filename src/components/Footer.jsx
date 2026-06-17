@@ -3,7 +3,7 @@ import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 function Footer() {
   return (
-   <footer className="bg-[#000000] text-[#FFF8EE] mt-20">
+   <footer className="bg-[#1B120C] text-[#FFF8EE] mt-20">
 
   {/* TOP SECTION */}
   <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
@@ -11,9 +11,9 @@ function Footer() {
     {/* BRAND */}
     <div>
       <img
-        src="/logo1.png"
+        src="hero/squirll.png"
         alt="Squrll Bites"
-        className="h-12 mb-4 brightness-110"
+        className="max-w-[100px] h-auto mb-4 brightness-110"
       />
       <p className="text-sm leading-relaxed text-[#F5E6D8]">
         Premium roasted makhana snacks made for guilt-free snacking.
