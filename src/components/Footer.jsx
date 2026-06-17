@@ -13,7 +13,7 @@ function Footer() {
       <img
         src="hero/squirll.png"
         alt="Squrll Bites"
-        className="max-w-[100px] h-auto mb-4 brightness-110"
+        className="max-w-[140px] h-38 mb-2 brightness-100"
       />
       <p className="text-sm leading-relaxed text-[#F5E6D8]">
         Premium roasted makhana snacks made for guilt-free snacking.
