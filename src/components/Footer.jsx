@@ -6,20 +6,22 @@ function Footer() {
    <footer className="bg-[#1B120C] text-[#FFF8EE] mt-20">
 
   {/* TOP SECTION */}
-  <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+  <div className="max-w-7xl mx-auto px-6 md:px-10 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 items-start">
 
     {/* BRAND */}
-    <div>
-      <img
-        src="hero/squirll.png"
-        alt="Squrll Bites"
-        className="max-w-[140px] h-38 mb-2 brightness-100"
-      />
-      <p className="text-sm leading-relaxed text-[#F5E6D8]">
-        Premium roasted makhana snacks made for guilt-free snacking.
-        Light. Crunchy. Addictively good.
-      </p>
-    </div>
+
+<div className="-mt-4">
+  <img
+    src="hero/squirll.png"
+    alt="Squrll Bites"
+    className="max-w-[140px] h-38 brightness-100"
+  />
+
+  <p className="mt-4 text-sm leading-relaxed text-[#F5E6D8]">
+    Premium roasted makhana snacks made for guilt-free snacking.
+    Light. Crunchy. Addictively good.
+  </p>
+</div>
 
     {/* QUICK LINKS */}
     <div>
