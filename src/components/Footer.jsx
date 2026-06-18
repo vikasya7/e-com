@@ -86,7 +86,7 @@ function Footer() {
         Squrll Bites Pvt. Ltd.
       </h3>
 
-       <p className="text-lg font-semibold mb-4">
+       <p className="text-sm mb-4">
         Bhubaneswar, Odisha, India 751029
       </p>
 
