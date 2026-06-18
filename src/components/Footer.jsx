@@ -76,17 +76,19 @@ function Footer() {
     {/* CONTACT */}
     <div>
 
-       <h2 className="text-lg font-semibold mb-4">
-        Squrll Bites Pvt. Ltd.
-      </h2>
-
-       <h2 className="text-lg font-semibold mb-4">
-        Bhubaneswar, Odisha, India 751029
-      </h2>
+   
 
       <h2 className="text-lg font-semibold mb-4">
         Contact Us
       </h2>
+
+          <h3 className="text-lg font-semibold mb-4">
+        Squrll Bites Pvt. Ltd.
+      </h3>
+
+       <p className="text-lg font-semibold mb-4">
+        Bhubaneswar, Odisha, India 751029
+      </p>
 
       <p className="text-sm mb-2">
         📧 support@squrllbites.in
