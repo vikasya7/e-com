@@ -53,7 +53,7 @@ function Navbar() {
             <img
               src="hero/logo1.png"
               alt="Squirll Bites"
-              className="h-24 md:h-24 w-auto object-contain"
+              className="h-30 md:h-40 w-auto object-contain"
             />
           </Link>
 
