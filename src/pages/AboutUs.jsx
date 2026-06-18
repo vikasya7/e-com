@@ -30,37 +30,52 @@ function AboutUs() {
 
       {/* OUR STORY */}
       <section className="bg-white py-28 px-6">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+ <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
 
-          <div>
-            <h2 className="text-5xl font-semibold tracking-tight">
-              Our Story
-            </h2>
+  {/* LEFT SIDE */}
+  <div>
+    <h2 className="text-5xl font-semibold tracking-tight">
+      Our Story
+    </h2>
 
-            <div className="w-16 h-[2px] bg-[#C48A3A] mt-6 mb-8"></div>
+    <div className="w-16 h-[2px] bg-[#C48A3A] mt-6 mb-8"></div>
 
-            <p className="text-gray-600 leading-relaxed max-w-md">
-              What began as a simple craving for healthier alternatives
-              evolved into a mission — to redefine indulgence.
-              We saw the gap between processed junk and truly wholesome snacks.
-            </p>
+    <p className="text-gray-600 leading-relaxed max-w-md">
+      What began as a simple craving for healthier alternatives
+      evolved into a mission — to redefine indulgence.
+      We saw the gap between processed junk and truly wholesome snacks.
+    </p>
 
-            <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
-              By roasting instead of frying and eliminating unnecessary additives,
-              we crafted a snack that complements modern lifestyles
-              while honoring simplicity.
-            </p>
-          </div>
+    <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+      By roasting instead of frying and eliminating unnecessary additives,
+      we crafted a snack that complements modern lifestyles
+      while honoring simplicity.
+    </p>
 
-          <div className="flex justify-center">
-            <img
-              src="/hero/hero2.png"
-              alt="Premium roasted makhana"
-              className="w-[340px] md:w-[400px] rounded-2xl shadow-md hover:scale-105 transition duration-500"
-            />
-          </div>
+    {/* FSSAI CARD */}
+    <div className="mt-10 inline-block bg-[#FFF8EE] border border-[#E8D8BC] rounded-2xl p-5 shadow-sm">
+      <img
+        src="hero/fssaii.png"
+        alt="FSSAI Certified"
+        className="w-80 h-40 object-contain"
+      />
 
-        </div>
+      <p className="mt-3 text-sm font-semibold text-[#4B2E1E]">
+        License No: 2272616300086
+      </p>
+    </div>
+  </div>
+
+  {/* RIGHT SIDE - KEEP EXISTING IMAGE */}
+  <div className="flex justify-center">
+    <img
+      src="/hero/hero2.png"
+      alt="Premium roasted makhana"
+      className="w-[340px] md:w-[400px] rounded-2xl shadow-md hover:scale-105 transition duration-500"
+    />
+  </div>
+
+</div>
       </section>
 
       {/* PRODUCT SHOWCASE (YOUR PACK IMAGE) */}
