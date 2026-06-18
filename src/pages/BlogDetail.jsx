@@ -24,7 +24,7 @@ function BlogDetail() {
       </Helmet>
 
       <div className="bg-[#FFF8EE] py-20">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-2xl mx-auto px-6">
 
           {/* Title */}
           <h1 className="text-4xl md:text-5xl font-bold text-[#6B3E26] mb-4 leading-tight">

@@ -30,52 +30,61 @@ function AboutUs() {
 
       {/* OUR STORY */}
       <section className="bg-white py-28 px-6">
- <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
 
-  {/* LEFT SIDE */}
-  <div>
-    <h2 className="text-5xl font-semibold tracking-tight">
-      Our Story
-    </h2>
+  <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
 
-    <div className="w-16 h-[2px] bg-[#C48A3A] mt-6 mb-8"></div>
+    {/* LEFT SIDE */}
+    <div>
+      <h2 className="text-5xl font-semibold tracking-tight">
+        Our Story
+      </h2>
 
-    <p className="text-gray-600 leading-relaxed max-w-md">
-      What began as a simple craving for healthier alternatives
-      evolved into a mission — to redefine indulgence.
-      We saw the gap between processed junk and truly wholesome snacks.
-    </p>
+      <div className="w-16 h-[2px] bg-[#C48A3A] mt-6 mb-8"></div>
 
-    <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
-      By roasting instead of frying and eliminating unnecessary additives,
-      we crafted a snack that complements modern lifestyles
-      while honoring simplicity.
-    </p>
+      <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+        Our journey began with a simple question: why should healthy snacking feel like a compromise?
+      </p>
 
-    {/* FSSAI CARD */}
-    <div className="mt-10 inline-block bg-[#FFF8EE] border border-[#E8D8BC] rounded-2xl p-5 shadow-sm">
-      <img
-        src="hero/fssaii.png"
-        alt="FSSAI Certified"
-        className="w-80 h-40 object-contain"
-      />
+      <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+        As consumers ourselves, we were often disappointed by snacks that were either loaded with artificial ingredients or lacked the taste and quality we were looking for. We wanted something better — a snack that felt indulgent while remaining true to wholesome ingredients.
+      </p>
 
-      <p className="mt-3 text-sm font-semibold text-[#4B2E1E]">
-        License No: 2272616300086
+      <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+        That search led us to makhana, a cherished Indian superfood celebrated for its nutritional benefits and naturally satisfying crunch. Inspired by its potential, we set out to create a modern snacking experience rooted in quality, simplicity, and authenticity.
+      </p>
+
+      <p className="mt-6 text-gray-600 leading-relaxed max-w-md">
+        Today, every pack of Squrll Bites reflects that commitment — thoughtfully crafted, carefully roasted, and made for those who believe great taste and mindful choices can go hand in hand.
       </p>
     </div>
+
+    {/* RIGHT SIDE */}
+    <div className="flex flex-col items-center gap-8">
+
+      <img
+        src="/hero/hero2.png"
+        alt="Premium roasted makhana"
+        className="w-[340px] md:w-[400px] rounded-2xl shadow-md hover:scale-105 transition duration-500"
+      />
+
+      <div className="w-full max-w-sm bg-[#FFF8EE] border border-[#E8D8BC] rounded-2xl px-6 py-5 shadow-sm text-center">
+
+        <img
+          src="/hero/fssaii.png"
+          alt="FSSAI Certified"
+          className="w-40 h-auto mx-auto object-contain"
+        />
+
+        <p className="mt-3 text-sm font-medium text-[#4B2E1E]">
+          License No: 2272616300086
+        </p>
+
+      </div>
+
+    </div>
+
   </div>
 
-  {/* RIGHT SIDE - KEEP EXISTING IMAGE */}
-  <div className="flex justify-center">
-    <img
-      src="/hero/hero2.png"
-      alt="Premium roasted makhana"
-      className="w-[340px] md:w-[400px] rounded-2xl shadow-md hover:scale-105 transition duration-500"
-    />
-  </div>
-
-</div>
       </section>
 
       {/* PRODUCT SHOWCASE (YOUR PACK IMAGE) */}

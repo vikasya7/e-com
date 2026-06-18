@@ -18,8 +18,8 @@ function Footer() {
   />
 
   <p className="mt-4 text-sm leading-relaxed text-[#F5E6D8]">
-    Premium roasted makhana snacks made for guilt-free snacking.
-    Light. Crunchy. Addictively good.
+   Thoughtfully roasted makhana crafted for modern lifestyles.
+Pure ingredients, satisfying crunch, and flavor in every bite.
   </p>
 </div>
 
